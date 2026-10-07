@@ -1,0 +1,28 @@
+{
+  "processed_appearances": 599,
+  "season_competition_groups": 23,
+  "shots": 2653,
+  "candidate_matches": 605,
+  "non_appearances_excluded": 6,
+  "failed_downloads": 0,
+  "unit_tests_passed": 12,
+  "dashboard_checks": [
+    "club scope",
+    "national scope",
+    "density map",
+    "season animation"
+  ],
+  "team_goals_reconciled_matches": 599,
+  "live_llm_api_test": false,
+  "llm_tool_routing_mock_test": true,
+  "python": "3.12.14",
+  "versions": {
+    "pandas": "2.2.3",
+    "numpy": "2.3.5",
+    "scikit-learn": "1.8.0",
+    "plotly": "6.9.0",
+    "streamlit": "1.65.0",
+    "duckdb": "1.5.6"
+  },
+  "note": "Counts are from the pinned source coverage, not full-career official totals."
+}

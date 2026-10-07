@@ -1,0 +1,14 @@
+{
+  "event_data": {
+    "provider": "StatsBomb Open Data",
+    "repository": "https://github.com/statsbomb/open-data",
+    "revision": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb",
+    "license": "StatsBomb Public Data User Agreement",
+    "redistributed_in_repository": false
+  },
+  "biography_coverage": [
+    "https://statsbomb.com/news/statsbomb-release-free-messi-data-all-seasons-from-2004-05-2020-21-now-available/",
+    "https://www.hudl.com/blog/statsbomb-release-free-lionel-messi-data-psg-and-inter-miami"
+  ],
+  "birthdate_and_barcelona_honours": "https://www.fcbarcelona.com/en/football/first-team/players/4974/lionel-andres-messi"
+}

@@ -1,0 +1,14 @@
+{
+  "title": "¿Qué temporada tiene mayor producción ofensiva por 90 en esta muestra?",
+  "finding": "Barcelona · 2012/2013 · La Liga: 1.90 goles + asistencias por 90 minutos reglamentarios estimados.",
+  "filters": {
+    "scope": "club",
+    "minimum_minutes": 450,
+    "metric": "goal_contributions_p90"
+  },
+  "denominator_minutes": 2645.8960666666667,
+  "source_revision": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb",
+  "source": "StatsBomb Open Data",
+  "caveat": "Ranking entre temporadas cubiertas, no toda competición ni toda la carrera. Tasas sensibles a competición y definición de minutos.",
+  "publication_requirements": "Incluir crédito y logo StatsBomb; verificar tabla fuente antes de publicar."
+}

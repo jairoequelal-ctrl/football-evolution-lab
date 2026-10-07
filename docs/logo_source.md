@@ -1,0 +1,1 @@
+StatsBomb official media-pack logo mirrored from https://github.com/AlexandreMorel/Football-Analytics/blob/main/assets/SB%20-%20Icon%20Lockup%20-%20Colour%20positive.png . Brand remains owned by StatsBomb. Official pack: https://statsbomb.com/media-pack/ . Used for attribution only.

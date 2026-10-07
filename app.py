@@ -9,7 +9,7 @@ from football_lab.charts import brand
 def chart(fig, **kwargs):
     st.plotly_chart(brand(fig), **kwargs)
 st.set_page_config(page_title="Messi · Football Evolution Lab",page_icon="⚽",layout="wide")
-st.markdown("<style>.stApp{background:#0b1421;color:#eff6ff}h1,h2,h3{color:#66e5c4}</style>",unsafe_allow_html=True)
+st.markdown("<style>.stApp{background:#160f29;color:#faf8fd}h1,h2,h3{color:#76d5f4}</style>",unsafe_allow_html=True)
 st.title("⚽ La evolución de Messi")
 st.caption("Football Evolution Lab · Data Science + Machine Learning + IA")
 st.image(str(ROOT/'assets/statsbomb-logo.png'),width=160)
@@ -26,7 +26,7 @@ with st.sidebar:
 d=s[(s.scope==scope)&s.team.isin(teams)&(s.minutes>=min_minutes)]
 cols=st.columns(4)
 for col,label,val in zip(cols,['Partidos cubiertos','Goles','Asistencias StatsBomb','Minutos reglamentarios'],[d.games.sum(),d.goals.sum(),d.assists.sum(),round(d.minutes.sum())]):col.metric(label,int(val))
-tabs=st.tabs(['Carrera','Mapa de disparos','Machine Learning','Preguntar / IA','Datos y cobertura','Impacto y equipo'])
+tabs=st.tabs(['Carrera','Mapa de disparos','Machine Learning','Preguntar / IA','Datos y cobertura','Impacto y equipo','Investigación y publicaciones'])
 with tabs[0]:
     metric=st.selectbox('Métrica',['goals_p90','assists_p90','goal_contributions_p90','key_passes_p90','dribbles_p90','xg_p90'])
     chart(px.line(d,x='age',y=metric,color='team',markers=True,hover_data=['season','competition','minutes'],template='plotly_dark'),width="stretch")
@@ -95,3 +95,33 @@ with tabs[4]:
     st.subheader('Títulos verificados: Barcelona')
     st.caption('Catálogo inicial: los 35 títulos con Barcelona. No es su palmarés completo actualizado.')
     st.dataframe(pd.read_csv(ROOT/'data/reference/honours.csv'),hide_index=True)
+
+
+with tabs[6]:
+    st.subheader('Crear también es atacar')
+    st.caption('Análisis fijo de Mundiales 2018 y 2022; esta sección no usa los filtros de la barra lateral.')
+    participation=ROOT/'artifacts/editorial/shot_involvement.csv'
+    if participation.exists():
+        involvement=pd.read_csv(participation)
+        long=involvement.melt(id_vars=['year'],value_vars=['messi_shots','created_shots'],var_name='Acción',value_name='Disparos')
+        long['year']=long['year'].astype(str)
+        chart(px.bar(long,x='Disparos',y='year',color='Acción',orientation='h',barmode='stack',color_discrete_sequence=['#ff428e','#76d5f4']),width='stretch')
+        st.dataframe(involvement,hide_index=True)
+        st.caption('Denominador: todos los disparos de Argentina en partidos cubiertos, incluidos minutos sin Messi. Unión de disparos propios y disparos asistidos mediante assisted_shot_id; no demuestra causalidad. Definiciones StatsBomb, distintas de Opta.')
+    else:
+        st.info('Genera el análisis editorial siguiendo research/README.md.')
+    research=ROOT/'artifacts/research/results.json'
+    if research.exists():
+        rr=json.loads(research.read_text())
+        st.subheader('¿Qué respalda la evidencia?')
+        st.dataframe(pd.DataFrame(rr['temporal_validation']).T,hide_index=False)
+        st.warning('La media histórica supera a los modelos de edad en las pruebas realizadas. La edad media observada es retrospectiva; no equivale a un modelo desplegado.')
+        st.caption('El máximo puntual de 2012/13 no establece superioridad concluyente frente a 2011/12. El intervalo de su diferencia incluye cero.')
+    st.subheader('Gráficas para publicar')
+    images=sorted((ROOT/'artifacts/editorial').glob('*.png'))
+    if images:
+        choice=st.selectbox('Formato y tema',[file.name for file in images])
+        selected=ROOT/'artifacts/editorial'/choice
+        st.image(str(selected))
+        st.download_button('Descargar PNG',selected.read_bytes(),file_name=choice,mime='image/png')
+        st.caption('Foto: Hossein Zohrevand / Tasnim, CC BY 4.0. Consulta créditos y enlace de licencia en research/README.md; conserva la atribución al publicar.')

@@ -56,3 +56,7 @@ pytest -q
 python scripts/validate_data.py
 ```
 Consulta [metodología](docs/methodology.md), [diccionario](docs/data_dictionary.md), [Power BI](docs/power_bi.md) y [roadmap](docs/roadmap.md).
+
+## Investigación y publicaciones
+
+Nuevo análisis de participación ofensiva, intervalos de incertidumbre y validación temporal: [research/README.md](research/README.md). Incluye generador de gráficas editoriales con fotografía acreditada, formatos LinkedIn y X y descarga desde el dashboard. Los resultados son exploratorios y la cobertura es parcial.

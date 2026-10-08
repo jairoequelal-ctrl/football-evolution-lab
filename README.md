@@ -60,3 +60,15 @@ Consulta [metodología](docs/methodology.md), [diccionario](docs/data_dictionary
 ## Investigación y publicaciones
 
 Nuevo análisis de participación ofensiva, intervalos de incertidumbre y validación temporal: [research/README.md](research/README.md). Incluye generador de gráficas editoriales con fotografía acreditada, formatos LinkedIn y X y descarga desde el dashboard. Los resultados son exploratorios y la cobertura es parcial.
+
+## Messi Role Finder: similitud de jugadores de clubes
+
+```bash
+python -m football_lab.pipeline
+python -m football_lab.role_finder
+streamlit run app.py
+```
+
+Nueva pestaña con comparación de perfiles por función (creación, finalización o mixto), clustering KMeans, mapa PCA, diagnósticos de estabilidad entre semillas y descarga CSV. [Método y límites](docs/role_finder.md).
+
+La muestra contiene jugadores participantes en los partidos de clubes de Messi ya cubiertos por el proyecto: **no cubre toda una liga ni representa futbolistas actuales**. Las comparaciones se restringen a la misma competición y temporada, con al menos 450 minutos reglamentarios estimados. Distancia de estilo no equivale a capacidad de reemplazar a Messi, impacto causal ni probabilidad de éxito.

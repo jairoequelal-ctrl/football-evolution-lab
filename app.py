@@ -26,7 +26,7 @@ with st.sidebar:
 d=s[(s.scope==scope)&s.team.isin(teams)&(s.minutes>=min_minutes)]
 cols=st.columns(4)
 for col,label,val in zip(cols,['Partidos cubiertos','Goles','Asistencias StatsBomb','Minutos reglamentarios'],[d.games.sum(),d.goals.sum(),d.assists.sum(),round(d.minutes.sum())]):col.metric(label,int(val))
-tabs=st.tabs(['Carrera','Mapa de disparos','Machine Learning','Preguntar / IA','Datos y cobertura','Impacto y equipo','Investigación y publicaciones'])
+tabs=st.tabs(['Carrera','Mapa de disparos','Machine Learning','Preguntar / IA','Datos y cobertura','Impacto y equipo','Investigación y publicaciones','Messi Role Finder'])
 with tabs[0]:
     metric=st.selectbox('Métrica',['goals_p90','assists_p90','goal_contributions_p90','key_passes_p90','dribbles_p90','xg_p90'])
     chart(px.line(d,x='age',y=metric,color='team',markers=True,hover_data=['season','competition','minutes'],template='plotly_dark'),width="stretch")
@@ -125,3 +125,29 @@ with tabs[6]:
         st.image(str(selected))
         st.download_button('Descargar PNG',selected.read_bytes(),file_name=choice,mime='image/png')
         st.caption('Foto: Hossein Zohrevand / Tasnim, CC BY 4.0. Consulta créditos y enlace de licencia en research/README.md; conserva la atribución al publicar.')
+
+with tabs[7]:
+    st.subheader('Messi Role Finder · clubes')
+    st.warning('Similitud de estilo, no capacidad de reemplazo. Muestra histórica de compañeros y rivales en partidos de Messi; no es scouting de toda una liga ni de jugadores actuales.')
+    from football_lab.role_finder import compare, map_cohort, GROUPS
+    folder=ROOT/'artifacts/role_finder'
+    if not (folder/'club_profiles.csv').exists():
+        st.code('python -m football_lab.role_finder')
+    else:
+        club_profiles=pd.read_csv(folder/'club_profiles.csv')
+        targets=club_profiles[club_profiles.player_id==5503]
+        choices={int(i):f'{r.team} · {r.competition} · {r.season}' for i,r in targets.iterrows()}
+        target=st.selectbox('Etapa y temporada de Messi',list(choices),format_func=lambda i:choices[i])
+        mode=st.radio('Función a comparar',list(GROUPS),horizontal=True)
+        st.caption('Mínimo de 450 minutos estimados en los partidos cubiertos. Escalado entre otros jugadores de la misma liga-temporada. Distancia menor = perfil más cercano; no es porcentaje de compatibilidad.')
+        try:
+            ranking=compare(club_profiles,target,mode)
+            st.dataframe(ranking[['player_name','team','competition','season','games','minutes','distance']+GROUPS[mode]],hide_index=True)
+            mapped,diagnostics=map_cohort(club_profiles,target)
+            mapped['target']=mapped.player_id.eq(5503).map({True:'Messi',False:'Otros perfiles'})
+            chart(px.scatter(mapped,x='pc1',y='pc2',color='cluster',symbol='target',hover_data=['player_name','team','season','minutes']),width='stretch')
+            st.caption('PCA es una proyección: distancias del mapa no sustituyen las del espacio completo. Los clusters son grupos numéricos, no posiciones tácticas.')
+            st.json(diagnostics)
+            st.download_button('Descargar comparación CSV',ranking.to_csv(index=False),'role_comparison.csv','text/csv')
+        except ValueError as error:
+            st.info(str(error))
